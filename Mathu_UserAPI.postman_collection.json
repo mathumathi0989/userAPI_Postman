@@ -1,0 +1,1574 @@
+{
+	"info": {
+		"_postman_id": "a178b42c-aa44-4921-b2dc-97eebb7d5f06",
+		"name": "Mathu_UserAPI",
+		"description": "BaseURL - [https://userserviceapp-f5a54828541b.herokuapp.com/uap](https://userserviceapp-f5a54828541b.herokuapp.com/uap)\n\nusername : Numpy@gmail.com  \npassword : userapi@nn\n\nCreate user endpoint : /createusers\n\nGet All users endpoint:/users\n\nGet By ID endpoint :user/{userId}\n\nGet By FirstName endpoint:users/username/{userFirstName}\n\nUpdate user endpoint: updateuser/{userId}\n\nDelete by Firstname endpoint: /deleteuser/username/{userfirstname}\n\nDelete by id endpoint: /deleteuser/{userId}",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3708521",
+		"_collection_link": "https://apiqajava.postman.co/workspace/Team4_API_BootCamp_Sep~c50623cd-4fa7-4c45-8031-40621dcd005a/collection/3708521-a178b42c-aa44-4921-b2dc-97eebb7d5f06?action=share&source=collection_link&creator=3708521"
+	},
+	"item": [
+		{
+			"name": "UserAPIFlow",
+			"item": [
+				{
+					"name": "GetAllUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate Status Code",
+									"pm.test(\"Status Code validation\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Validate Status Line",
+									"pm.test(\"Status Line validation\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"// Validate Response Headers",
+									"pm.test(\"Content-Type header validation\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type validation\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");",
+									"});",
+									"",
+									"// Validate schema",
+									"const schema = {",
+									"  \"type\": \"array\",",
+									"      \"userAddress\": {",
+									"        \"type\": \"object\",",
+									"          \"addressId\": { \"type\": \"integer\" },",
+									"          \"plotNumber\": { \"type\": \"string\" },",
+									"          \"street\": { \"type\": \"string\" },",
+									"          \"state\": { \"type\": \"string\" },",
+									"          \"country\": { \"type\": \"string\" },",
+									"          \"zipCode\": { \"type\": \"integer\" }",
+									"      },",
+									"      \"user_id\": { \"type\": \"integer\" },",
+									"      \"user_first_name\": { \"type\": \"string\" },",
+									"      \"user_last_name\": { \"type\": \"string\" },",
+									"      \"user_contact_number\": { \"type\": \"integer\" },",
+									"      \"user_email_id\": { \"type\": \"string\" },",
+									"      \"creation_time\": { \"type\": \"string\" },",
+									"      \"last_mod_time\": { \"type\": \"string\" }",
+									"};",
+									"",
+									"// Parse the JSON response body",
+									"pm.test(\"Response conforms to the specified schema\", function () {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"// Validate Data Types",
+									"pm.test(\"Data Validation - User ID is an integer\", function () {",
+									"    const jsonData = pm.response.json();",
+									"    jsonData.forEach((user) => {",
+									"        pm.expect(user.user_id).to.be.a(\"number\");",
+									"    });",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURI}}users",
+							"host": [
+								"{{BaseURI}}users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"pm.globals.set(\"userid\", jsonData.user_id);",
+									"console.log(\"User ID: \" + jsonData.user_id);",
+									"",
+									"pm.globals.set(\"userfirstname\", jsonData.user_first_name);",
+									"console.log(\"User userfirstname: \" + jsonData.user_first_name);",
+									"",
+									"// Validate Status Code",
+									"const statuscode = pm.iterationData.get(\"status_code\");",
+									"pm.test(\"Status Code validation\", function () {",
+									"     pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// Validate Status Line",
+									"pm.test(\"Status Line validation\", function () {",
+									"    pm.response.to.have.status(\"Created\");",
+									"});",
+									"",
+									"// Validate Response Headers",
+									"pm.test(\"Content-Type header validation\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type validation\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");",
+									"});",
+									"",
+									"const schema = {",
+									"  \"type\": \"object\",",
+									"      \"userAddress\": {",
+									"          \"addressId\": { \"type\": \"integer\" },",
+									"          \"plotNumber\": { \"type\": \"string\" },",
+									"          \"street\": { \"type\": \"string\" },",
+									"          \"state\": { \"type\": \"string\" },",
+									"          \"country\": { \"type\": \"string\" },",
+									"          \"zipCode\": { \"type\": \"integer\" }",
+									"      },",
+									"      \"user_id\": { \"type\": \"integer\" },",
+									"      \"user_first_name\": { \"type\": \"string\" },",
+									"      \"user_last_name\": { \"type\": \"string\" },",
+									"      \"user_contact_number\": { \"type\": \"integer\" },",
+									"      \"user_email_id\": { \"type\": \"string\" },",
+									"      \"creation_time\": { \"type\": \"string\" },",
+									"      \"last_mod_time\": { \"type\": \"string\" }",
+									"};",
+									"",
+									"// Parse the JSON response body",
+									"pm.test(\"Response conforms to the specified schema\", function () {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"",
+									"console.log(pm.response.text());",
+									"",
+									"",
+									"",
+									"if (pm.response.code !== 201) {",
+									"    console.log(\"Create request failed. Skipping PUT and DELETE requests.\");",
+									"    postman.setNextRequest(null);",
+									"} else {",
+									"    console.log(\"Create request succeeded.Proceeding with following requests \");",
+									"}",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n  \"user_first_name\": \"train\",\n  \"user_last_name\": \"vehid\",\n  \"user_contact_number\": \"7765799992\",\n  \"user_email_id\": \"vehicl3@gmail.com\",\n  \"userAddress\": {\n    \"plotNumber\": \"pl-72\",\n    \"street\": \"Avenue\",\n    \"state\": \"New Jersey\",\n    \"country\": \"USA\",\n    \"zipCode\": \"72322\"\n  }\n}\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURI}}createusers",
+							"host": [
+								"{{BaseURI}}createusers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByUserID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate Status Code",
+									"pm.test(\"Status Code validation\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Validate Status Line",
+									"pm.test(\"Status Line validation\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"// Validate Response Headers",
+									"pm.test(\"Content-Type header validation\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type validation\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");",
+									"});",
+									"",
+									"// Validate schema",
+									"const schema = {",
+									"      \"userAddress\": {",
+									"          \"addressId\": { \"type\": \"integer\" },",
+									"          \"plotNumber\": { \"type\": \"string\" },",
+									"          \"street\": { \"type\": \"string\" },",
+									"          \"state\": { \"type\": \"string\" },",
+									"          \"country\": { \"type\": \"string\" },",
+									"          \"zipCode\": { \"type\": \"integer\" }",
+									"      },",
+									"      \"user_id\": { \"type\": \"integer\" },",
+									"      \"user_first_name\": { \"type\": \"string\" },",
+									"      \"user_last_name\": { \"type\": \"string\" },",
+									"      \"user_contact_number\": { \"type\": \"integer\" },",
+									"      \"user_email_id\": { \"type\": \"string\" },",
+									"      \"creation_time\": { \"type\": \"string\" },",
+									"      \"last_mod_time\": { \"type\": \"string\" }",
+									"};",
+									"",
+									"// Parse the JSON response body",
+									"pm.test(\"Response conforms to the specified schema\", function () {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURI}}user/{{userid}}",
+							"host": [
+								"{{BaseURI}}user"
+							],
+							"path": [
+								"{{userid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"",
+									"// Validate Status Code",
+									"const statuscode = pm.iterationData.get(\"status_code\");",
+									"pm.test(\"Status Code validation\", function () {",
+									"     pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Validate Status Line",
+									"pm.test(\"Status Line validation\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"// Validate Response Headers",
+									"pm.test(\"Content-Type header validation\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type validation\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");",
+									"});",
+									"",
+									"const schema = {",
+									"  \"type\": \"object\",",
+									"      \"userAddress\": {",
+									"          \"addressId\": { \"type\": \"integer\" },",
+									"          \"plotNumber\": { \"type\": \"string\" },",
+									"          \"street\": { \"type\": \"string\" },",
+									"          \"state\": { \"type\": \"string\" },",
+									"          \"country\": { \"type\": \"string\" },",
+									"          \"zipCode\": { \"type\": \"integer\" }",
+									"      },",
+									"      \"user_id\": { \"type\": \"integer\" },",
+									"      \"user_first_name\": { \"type\": \"string\" },",
+									"      \"user_last_name\": { \"type\": \"string\" },",
+									"      \"user_contact_number\": { \"type\": \"integer\" },",
+									"      \"user_email_id\": { \"type\": \"string\" },",
+									"      \"creation_time\": { \"type\": \"string\" },",
+									"      \"last_mod_time\": { \"type\": \"string\" }",
+									"};",
+									"",
+									"// Parse the JSON response body",
+									"pm.test(\"Response conforms to the specified schema\", function () {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"",
+									"console.log(pm.response.text());",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\n{\n  \"user_first_name\": \"train\",\n  \"user_last_name\": \"upda\",\n  \"user_contact_number\": \"7799799911\",\n  \"user_email_id\": \"vehicl2222@gmail.com\",\n  \"userAddress\": {\n    \"plotNumber\": \"pl-72\",\n    \"street\": \"Avenue\",\n    \"state\": \"New Jersey\",\n    \"country\": \"USA\",\n    \"zipCode\": \"72322\"\n  }\n}\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURI}}updateuser/{{userid}}",
+							"host": [
+								"{{BaseURI}}updateuser"
+							],
+							"path": [
+								"{{userid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByFirstName",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate Status Code",
+									"pm.test(\"Status Code validation\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Validate Status Line",
+									"pm.test(\"Status Line validation\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"// Validate Response Headers",
+									"pm.test(\"Content-Type header validation\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type validation\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");",
+									"});",
+									"",
+									"// Validate schema",
+									"const schema = {",
+									"      \"userAddress\": {",
+									"          \"addressId\": { \"type\": \"integer\" },",
+									"          \"plotNumber\": { \"type\": \"string\" },",
+									"          \"street\": { \"type\": \"string\" },",
+									"          \"state\": { \"type\": \"string\" },",
+									"          \"country\": { \"type\": \"string\" },",
+									"          \"zipCode\": { \"type\": \"integer\" }",
+									"      },",
+									"      \"user_id\": { \"type\": \"integer\" },",
+									"      \"user_first_name\": { \"type\": \"string\" },",
+									"      \"user_last_name\": { \"type\": \"string\" },",
+									"      \"user_contact_number\": { \"type\": \"integer\" },",
+									"      \"user_email_id\": { \"type\": \"string\" },",
+									"      \"creation_time\": { \"type\": \"string\" },",
+									"      \"last_mod_time\": { \"type\": \"string\" }",
+									"};",
+									"",
+									"// Parse the JSON response body",
+									"pm.test(\"Response conforms to the specified schema\", function () {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURI}}users/username/{{userfirstname}}",
+							"host": [
+								"{{BaseURI}}users"
+							],
+							"path": [
+								"username",
+								"{{userfirstname}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteByUserID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate Status Code",
+									"pm.test(\"Status Code validation\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Validate Status Line",
+									"pm.test(\"Status Line validation\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"// Validate Response Headers",
+									"pm.test(\"Content-Type header validation\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type validation\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json\");",
+									"});",
+									"",
+									"// Parse the JSON response body",
+									"const responseJson = pm.response.json();",
+									"",
+									"// Validate the status and message in the response",
+									"pm.test(\"Response contains correct status and message\", function () {",
+									"    pm.expect(responseJson.status).to.eql(\"Success\");",
+									"    pm.expect(responseJson.message).to.eql(\"User is deleted successfully\");",
+									"});",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURI}}deleteuser/{{userid}}",
+							"host": [
+								"{{BaseURI}}deleteuser"
+							],
+							"path": [
+								"{{userid}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "POSTUserValidation",
+			"item": [
+				{
+					"name": "CreateUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// API Chaining for userID and firstName",
+									"const jsonData = pm.response.json();",
+									"pm.globals.set(\"userid\", jsonData.user_id);",
+									"console.log(\"User ID: \" + jsonData.user_id);",
+									"pm.globals.set(\"userfirstname\", jsonData.user_first_name);",
+									"console.log(\"User first name: \" + jsonData.user_first_name);",
+									"",
+									"// Mentioning scenario details in the test",
+									"const scenarioName = pm.iterationData.get(\"scenario_name\");",
+									"console.log(\"Running Scenario:\", scenarioName);",
+									"",
+									"// Fetching endpoint",
+									"const endpoint = pm.iterationData.get(\"endpoint\");",
+									"console.log(`Current Endpoint for Iteration ${pm.info.iteration}: ${endpoint}`);",
+									"pm.variables.set(\"endpoint\", endpoint);",
+									"",
+									"// Validate Status Code",
+									"const statuscode = pm.iterationData.get(\"status_code\");",
+									"pm.test(`${scenarioName} - Verify status code`, function () {",
+									"    pm.response.to.have.status(parseInt(statuscode)); ",
+									"});",
+									"",
+									"// Validate Status Line",
+									"const expectedStatusLine = pm.iterationData.get(\"status_line\");",
+									"",
+									"pm.test(`${scenarioName} - Verify Status line`, () => {",
+									"    pm.response.to.have.status(expectedStatusLine);",
+									"});",
+									"",
+									"// Validate Response Headers",
+									"const expectedContentType = pm.iterationData.get(\"content_type\");",
+									"pm.test(`${scenarioName} - Verify Content type`, function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(expectedContentType);",
+									"});",
+									"",
+									"// Validate schema",
+									"const schema = {",
+									"    \"type\": \"object\",",
+									"    \"userAddress\": {",
+									"        \"addressId\": { \"type\": \"integer\" },",
+									"        \"plotNumber\": { \"type\": \"string\" },",
+									"        \"street\": { \"type\": \"string\" },",
+									"        \"state\": { \"type\": \"string\" },",
+									"        \"country\": { \"type\": \"string\" },",
+									"        \"zipCode\": { \"type\": \"integer\" }",
+									"    },",
+									"    \"user_id\": { \"type\": \"integer\" },",
+									"    \"user_first_name\": { \"type\": \"string\" },",
+									"    \"user_last_name\": { \"type\": \"string\" },",
+									"    \"user_contact_number\": { \"type\": \"integer\" },",
+									"    \"user_email_id\": { \"type\": \"string\" },",
+									"    \"creation_time\": { \"type\": \"string\" },",
+									"    \"last_mod_time\": { \"type\": \"string\" }",
+									"};",
+									"",
+									"pm.test(`${scenarioName} - Verify schema`, function () {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"// To print the response in console",
+									"console.log(pm.response.text());",
+									"",
+									"// To validate content-type",
+									"const contentType = pm.iterationData.get(\"content_type\");",
+									"pm.request.headers.add({",
+									"    key: 'Content-Type',",
+									"    value: contentType",
+									"});",
+									"",
+									"// If post request is not successful, then fail update and delete",
+									"if (pm.response.code !== 201) {",
+									"    console.log(\"Create request failed. Skipping PUT and DELETE requests.\");",
+									"    postman.setNextRequest(null);",
+									"} else {",
+									"    console.log(\"Create request succeeded. Proceeding with following requests.\");",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"user_first_name\":  \"{{user_first_name}}\",\n \"user_last_name\":  \"{{user_last_name}}\"     ,  \n   \"user_contact_number\": \"{{user_contact_number}}\"  ,\n    \"user_email_id\": \"{{user_email_id}}\",\n\"userAddress\": {\n   \"plotNumber\": \"{{plotNumber}}\",\n   \"street\": \"{{street}}\",\n   \"state\": \"{{state}}\",\n    \"country\": \"{{country}}\",\n   \"zipCode\": \"{{zipCode}}\"\n }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURI}}{{endpoint}}",
+							"host": [
+								"{{BaseURI}}{{endpoint}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteByUserID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate Status Code",
+									"pm.test(\"Status Code validation\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Validate Status Line",
+									"pm.test(\"Status Line validation\", function () {",
+									"    pm.response.to.have.status(\"OK\");",
+									"});",
+									"",
+									"// Parse the JSON response body",
+									"const responseJson = pm.response.json();",
+									"",
+									"// Validate the status and message in the response",
+									"pm.test(\"Response contains correct status and message\", function () {",
+									"    pm.expect(responseJson.status).to.eql(\"Success\");",
+									"    pm.expect(responseJson.message).to.eql(\"User is deleted successfully\");",
+									"});",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURI}}deleteuser/{{userid}}",
+							"host": [
+								"{{BaseURI}}deleteuser"
+							],
+							"path": [
+								"{{userid}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PUTUserValidation",
+			"item": [
+				{
+					"name": "PutUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Mentioning scenario details in the test",
+									"const scenarioName = pm.iterationData.get(\"scenario_name\");",
+									"console.log(\"Running Scenario:\", scenarioName);",
+									"",
+									"// Clear previous endpoint",
+									"pm.environment.unset(\"endpoint\");",
+									"",
+									"// Fetching endpoint for each iteration",
+									"pm.environment.set(\"endpoint\", pm.iterationData.get(\"endpoint\"));",
+									"",
+									"// Log the endpoint for debugging",
+									"const endpoint = pm.environment.get(\"endpoint\");",
+									"console.log(`Endpoint for ${scenarioName}:`, endpoint);",
+									"",
+									"// Validate Status Code",
+									"const statusCode = pm.iterationData.get(\"status_code\");",
+									"pm.test(`${scenarioName} - Verify status code`, function () {",
+									"    pm.response.to.have.status(parseInt(statusCode)); ",
+									"});",
+									"",
+									"// Validate Status Line",
+									"const expectedStatusLine = pm.iterationData.get(\"status_line\");",
+									"pm.test(`${scenarioName} - Verify Status line`, () => {",
+									"  pm.expect(pm.response.status).to.eql(expectedStatusLine); ",
+									"});",
+									"",
+									"// Validate Response Headers",
+									"const expectedContentType = pm.iterationData.get(\"content_type\");",
+									"pm.test(`${scenarioName} - Verify Content type`, function () {",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.eql(expectedContentType);",
+									"});",
+									"",
+									"// Fetch the response body to validate",
+									"const responseBody = pm.response.json();",
+									"",
+									"// Fetch the feature from iteration data",
+									"const feature = pm.iterationData.get(\"feature\");",
+									"",
+									"// Function to validate fields conditionally",
+									"function validateFields() {",
+									"    if (feature === \"all\") {",
+									"        pm.test(`${scenarioName} - Verify First Name`, function () {",
+									"            pm.expect(responseBody.user_first_name).to.eql(pm.iterationData.get(\"user_first_name\"));",
+									"        });",
+									"",
+									"        pm.test(`${scenarioName} - Verify Last Name`, function () {",
+									"            pm.expect(responseBody.user_last_name).to.eql(pm.iterationData.get(\"user_last_name\"));",
+									"        });",
+									"",
+									"        pm.test(`${scenarioName} - Verify Contact Number`, function () {",
+									"            pm.expect(responseBody.user_contact_number.toString()).to.eql(parseInt(pm.iterationData.get(\"user_contact_number\")));",
+									"        });",
+									"",
+									"        pm.test(`${scenarioName} - Verify Email ID`, function () {",
+									"            pm.expect(responseBody.user_email_id).to.eql(pm.iterationData.get(\"user_email_id\"));",
+									"        });",
+									"",
+									"        pm.test(`${scenarioName} - Verify Plot Number`, function () {",
+									"            pm.expect(responseBody.userAddress.plotNumber).to.eql(pm.iterationData.get(\"plotNumber\"));",
+									"        });",
+									"",
+									"        pm.test(`${scenarioName} - Verify Street`, function () {",
+									"            pm.expect(responseBody.userAddress.street).to.eql(pm.iterationData.get(\"street\"));",
+									"        });",
+									"",
+									"        pm.test(`${scenarioName} - Verify State`, function () {",
+									"            pm.expect(responseBody.userAddress.state).to.eql(pm.iterationData.get(\"state\"));",
+									"        });",
+									"",
+									"        pm.test(`${scenarioName} - Verify Country`, function () {",
+									"            pm.expect(responseBody.userAddress.country).to.eql(pm.iterationData.get(\"country\"));",
+									"        });",
+									"",
+									"        pm.test(`${scenarioName} - Verify Zip Code`, function () {",
+									"            pm.expect(responseBody.userAddress.zipCode.toString()).to.eql(parseInt(pm.iterationData.get(\"zipCode\")));",
+									"        });",
+									"    }",
+									"",
+									"    // Validate specific fields based on feature column",
+									"    if (feature.includes(\"contact number\")) {",
+									"        pm.test(`${scenarioName} - Verify Contact Number`, function () {",
+									"            pm.expect(responseBody.user_contact_number.toString()).to.eql(parseInt(pm.iterationData.get(\"user_contact_number\")));",
+									"        });",
+									"    }",
+									"    ",
+									"    if (feature.includes(\"email\")) {",
+									"        pm.test(`${scenarioName} - Verify Email ID`, function () {",
+									"            pm.expect(responseBody.user_email_id).to.eql(pm.iterationData.get(\"user_email_id\"));",
+									"        });",
+									"    }",
+									"",
+									"    if (feature.includes(\"user_first_name\")) {",
+									"        pm.test(`${scenarioName} - Verify First Name`, function () {",
+									"            pm.expect(responseBody.user_first_name).to.eql(pm.iterationData.get(\"user_first_name\"));",
+									"        });",
+									"    }",
+									"",
+									"    if (feature.includes(\"user_last_name\")) {",
+									"        pm.test(`${scenarioName} - Verify Last Name`, function () {",
+									"            pm.expect(responseBody.user_last_name).to.eql(pm.iterationData.get(\"user_last_name\"));",
+									"        });",
+									"    }",
+									"",
+									"    if (feature.includes(\"plotNumber\")) {",
+									"        pm.test(`${scenarioName} - Verify Plot Number`, function () {",
+									"            pm.expect(responseBody.userAddress.plotNumber).to.eql(pm.iterationData.get(\"plotNumber\"));",
+									"        });",
+									"    }",
+									"",
+									"    if (feature.includes(\"street\")) {",
+									"        pm.test(`${scenarioName} - Verify Street`, function () {",
+									"            pm.expect(responseBody.userAddress.street).to.eql(pm.iterationData.get(\"street\"));",
+									"        });",
+									"    }",
+									"",
+									"    if (feature.includes(\"state\")) {",
+									"        pm.test(`${scenarioName} - Verify State`, function () {",
+									"            pm.expect(responseBody.userAddress.state).to.eql(pm.iterationData.get(\"state\"));",
+									"        });",
+									"    }",
+									"",
+									"    if (feature.includes(\"country\")) {",
+									"        pm.test(`${scenarioName} - Verify Country`, function () {",
+									"            pm.expect(responseBody.userAddress.country).to.eql(pm.iterationData.get(\"country\"));",
+									"        });",
+									"    }",
+									"",
+									"    if (feature.includes(\"zipCode\")) {",
+									"        pm.test(`${scenarioName} - Verify Zip Code`, function () {",
+									"            pm.expect(responseBody.userAddress.zipCode.toString()).to.eql(parseInt(pm.iterationData.get(\"zipCode\")));",
+									"        });",
+									"    }",
+									"}",
+									"",
+									"// Call the function to validate fields",
+									"validateFields();",
+									"",
+									"// Validate schema",
+									"const schema = {",
+									"  \"type\": \"object\",",
+									"  \"properties\": {",
+									"      \"userAddress\": {",
+									"          \"type\": \"object\",",
+									"          \"properties\": {",
+									"              \"addressId\": { \"type\": \"integer\" },",
+									"              \"plotNumber\": { \"type\": \"string\" },",
+									"              \"street\": { \"type\": \"string\" },",
+									"              \"state\": { \"type\": \"string\" },",
+									"              \"country\": { \"type\": \"string\" },",
+									"              \"zipCode\": { \"type\": \"integer\" }",
+									"          }",
+									"      },",
+									"      \"user_id\": { \"type\": \"integer\" },",
+									"      \"user_first_name\": { \"type\": \"string\" },",
+									"      \"user_last_name\": { \"type\": \"string\" },",
+									"      \"user_contact_number\": { \"type\": \"integer\" },",
+									"      \"user_email_id\": { \"type\": \"string\" },",
+									"      \"creation_time\": { \"type\": \"string\" },",
+									"      \"last_mod_time\": { \"type\": \"string\" }",
+									"  },",
+									"  \"required\": [\"userAddress\", \"user_id\", \"user_first_name\", \"user_last_name\", \"user_contact_number\", \"user_email_id\"]",
+									"};",
+									"",
+									"pm.test(`${scenarioName} - Verify schema`, function () {",
+									"    pm.response.to.have.jsonSchema(schema);",
+									"});",
+									"",
+									"// To print the response in console",
+									"console.log(pm.response.text());",
+									"",
+									"// To validate content-type",
+									"const contentType = pm.iterationData.get(\"content_type\");",
+									"pm.request.headers.add({",
+									"    key: 'Content-Type',",
+									"    value: contentType",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"user_first_name\":  \"{{user_first_name}}\",\n \"user_last_name\":  \"{{user_last_name}}\"     ,  \n   \"user_contact_number\": \"{{user_contact_number}}\"  ,\n    \"user_email_id\": \"{{user_email_id}}\",\n\"userAddress\": {\n   \"plotNumber\": \"{{plotNumber}}\",\n   \"street\": \"{{street}}\",\n   \"state\": \"{{state}}\",\n    \"country\": \"{{country}}\",\n   \"zipCode\": \"{{zipCode}}\"\n }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseURI}}updateuser/{{endpoint}}",
+							"host": [
+								"{{BaseURI}}updateuser"
+							],
+							"path": [
+								"{{endpoint}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DeleteUserValidation",
+			"item": [
+				{
+					"name": "DeleteRequestByUserID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Get the iteration data values",
+									"const scenarioName = pm.iterationData.get(\"scenario_name\");",
+									"const statusCode = parseInt(pm.iterationData.get(\"status_code\"));",
+									"const statusLine = pm.iterationData.get(\"status_line\");",
+									"",
+									"// Log scenario name for clarity",
+									"console.log(`Running Scenario: ${scenarioName}`);",
+									"",
+									"// Validate the status code",
+									"pm.test(`${scenarioName} - Status code validation`, function () {",
+									"    pm.response.to.have.status(statusCode);",
+									"});",
+									"",
+									"// Validate the status line",
+									"pm.test(`${scenarioName} - Status line validation`, function () {",
+									"    const actualStatusLine = pm.response.status;",
+									"    pm.expect(actualStatusLine).to.eql(statusLine);",
+									"});",
+									"",
+									"// If status code is 200, validate the response body",
+									"if (statusCode === 200) {",
+									"    const responseJson = pm.response.json();",
+									"    pm.test(`${scenarioName} - Response contains correct status and message`, function () {",
+									"        pm.expect(responseJson.status).to.eql(\"Success\");",
+									"        pm.expect(responseJson.message).to.eql(\"User is deleted successfully\");",
+									"    });",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURI}}deleteuser/{{user_id}}",
+							"host": [
+								"{{BaseURI}}deleteuser"
+							],
+							"path": [
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteRequestByFirstName",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Get the iteration data values",
+									"const scenarioName = pm.iterationData.get(\"scenario_name\");",
+									"const statusCode = parseInt(pm.iterationData.get(\"status_code\"));",
+									"const statusLine = pm.iterationData.get(\"status_line\");",
+									"",
+									"// Log scenario name for clarity",
+									"console.log(`Running Scenario: ${scenarioName}`);",
+									"",
+									"// Validate the status code",
+									"pm.test(`${scenarioName} - Status code validation`, function () {",
+									"    pm.response.to.have.status(statusCode);",
+									"});",
+									"",
+									"// Validate the status line",
+									"pm.test(`${scenarioName} - Status line validation`, function () {",
+									"    const actualStatusLine = pm.response.status;",
+									"    pm.expect(actualStatusLine).to.eql(statusLine);",
+									"});",
+									"",
+									"// If status code is 200, validate the response body",
+									"if (statusCode === 200) {",
+									"    const responseJson = pm.response.json();",
+									"    pm.test(`${scenarioName} - Response contains correct status and message`, function () {",
+									"        pm.expect(responseJson.status).to.eql(\"Success\");",
+									"        pm.expect(responseJson.message).to.eql(\"User is deleted successfully\");",
+									"    });",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURI}}deleteuser/username/{{firstname}}",
+							"host": [
+								"{{BaseURI}}deleteuser"
+							],
+							"path": [
+								"username",
+								"{{firstname}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GetUserVallidation",
+			"item": [
+				{
+					"name": "GetRequestByUserID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Get the iteration data values",
+									"const scenarioName = pm.iterationData.get(\"scenario_name\");",
+									"const statusCode = parseInt(pm.iterationData.get(\"status_code\"));",
+									"const statusLine = pm.iterationData.get(\"status_line\");",
+									"",
+									"// Log scenario name for clarity",
+									"console.log(`Running Scenario: ${scenarioName}`);",
+									"",
+									"// Validate the status code",
+									"pm.test(`${scenarioName} - Status code validation`, function () {",
+									"    pm.response.to.have.status(statusCode);",
+									"});",
+									"",
+									"// Validate the status line",
+									"pm.test(`${scenarioName} - Status line validation`, function () {",
+									"    const actualStatusLine = pm.response.status;",
+									"    pm.expect(actualStatusLine).to.eql(statusLine);",
+									"});",
+									"",
+									"// If status code is 200, validate the response body",
+									"if (pm.response.code === 200) {",
+									"    const responseJson = pm.response.json();",
+									"    const expectedUserId = pm.iterationData.get(\"useridc\"); ",
+									"    ",
+									"    pm.test(`${scenarioName} - Verify userID in response`, function () {",
+									"        pm.expect(responseJson.user_id).to.eql(parseInt(expectedUserId)); ",
+									"    });",
+									"}",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURI}}user/{{useridc}}",
+							"host": [
+								"{{BaseURI}}user"
+							],
+							"path": [
+								"{{useridc}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetRequestByFirstName",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Get the iteration data values",
+									"const scenarioName = pm.iterationData.get(\"scenario_name\");",
+									"const statusCode = parseInt(pm.iterationData.get(\"status_code\"));",
+									"const statusLine = pm.iterationData.get(\"status_line\");",
+									"",
+									"// Log scenario name for clarity",
+									"console.log(`Running Scenario: ${scenarioName}`);",
+									"",
+									"// Validate the status code",
+									"pm.test(`${scenarioName} - Status code validation`, function () {",
+									"    pm.response.to.have.status(statusCode);",
+									"});",
+									"",
+									"// Validate the status line",
+									"pm.test(`${scenarioName} - Status line validation`, function () {",
+									"    const actualStatusLine = pm.response.status;",
+									"    pm.expect(actualStatusLine).to.eql(statusLine);",
+									"});",
+									"",
+									"// If status code is 200, validate the response body",
+									"if (pm.response.code === 200) {",
+									"    // Parse the response body and assign it to responseJson",
+									"    const responseJson = pm.response.json();  ",
+									"    // Log the full response to check its structure",
+									"    console.log(responseJson);",
+									"    ",
+									"    const expectedFirstName = pm.iterationData.get(\"firstname\");  ",
+									"    console.log(expectedFirstName);",
+									"    pm.test(`${scenarioName} - Verify firstname in response`, function () {",
+									"       pm.expect(responseJson[0].user_first_name).to.equal(expectedFirstName);",
+									"       ",
+									"    });",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURI}}users/username/{{firstname}}",
+							"host": [
+								"{{BaseURI}}users"
+							],
+							"path": [
+								"username",
+								"{{firstname}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GETAllUserValidation",
+			"item": [
+				{
+					"name": "GetAllUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Define the base URL from collection variable",
+									"const baseUrl = pm.collectionVariables.get(\"BaseURI\"); ",
+									"",
+									"// Define the test data inline with authentication and GET method",
+									"const testData = [",
+									"    { scenario_name: \"Get All - valid endpoint\", endpoint: \"users\", method: 'GET', auth: 'Basic', status_code: 200, status_line: \"OK\" },",
+									"    { scenario_name: \"Get All - invalid endpoint\", endpoint: \"invalid\", method: 'GET', auth: 'Basic', status_code: 404, status_line: \"Not Found\" },",
+									"    { scenario_name: \"Get All - empty endpoint\", endpoint: \"\", method: 'GET', auth: 'Basic', status_code: 404, status_line: \"Not Found\" },",
+									"    { scenario_name: \"Get All - null endpoint\", endpoint: null, method: 'GET', auth: 'Basic', status_code: 404, status_line: \"Not Found\" },",
+									"    { scenario_name: \"Get All - GET without auth\", endpoint: \"users\", method: 'GET', auth: 'None', status_code: 200, status_line: \"OK\" }",
+									"];",
+									"",
+									"// Iterate through each test case",
+									"testData.forEach(test => {",
+									"    // Log scenario name for clarity",
+									"    console.log(`Running Scenario: ${test.scenario_name}`);",
+									"    ",
+									"     console.log(`Authentication Type: ${test.auth}`);",
+									"    // Create the full URL by concatenating base URL and endpoint",
+									"    const requestUrl = `${baseUrl}${test.endpoint || \"\"}`; ",
+									"    console.log(`Request URL: ${requestUrl}`);",
+									"",
+									"    // Set up the request object with method and optional authentication",
+									"    const requestOptions = {",
+									"        url: requestUrl,",
+									"        method: test.method",
+									"    };",
+									"",
+									"    // Add Basic Authentication if specified",
+									"    if (test.auth === 'Basic') {",
+									"        requestOptions.auth = {",
+									"            user: pm.environment.get('username'), ",
+									"            pass: pm.environment.get('password'), ",
+									"            sendImmediately: true",
+									"        };",
+									"    }",
+									"",
+									"    // Make the request",
+									"    pm.sendRequest(requestOptions, function (err, res) {",
+									"        if (err) {",
+									"            console.log(`Error in ${test.scenario_name}: ${err}`);",
+									"            return;",
+									"        }",
+									"",
+									"        // Log response body in test results",
+									"        try {",
+									"            const responseBody = res.json();",
+									"            console.log(`Response for ${test.scenario_name}:`, responseBody);",
+									"        } catch (e) {",
+									"            console.log(`Error parsing response JSON for ${test.scenario_name}:`, e);",
+									"        }",
+									"",
+									"        // Validate the status code",
+									"        pm.test(`${test.scenario_name} - Status code validation`, function () {",
+									"            console.log(`Expected: ${test.status_code}, Actual: ${res.code}`); ",
+									"            pm.expect(res.code).to.eql(test.status_code);",
+									"        });",
+									"",
+									"        // Validate the status line (res.reason() gives the status line)",
+									"        pm.test(`${test.scenario_name} - Status line validation`, function () {",
+									"            console.log(`Expected: ${test.status_line}, Actual: ${res.reason()}`);",
+									"            pm.expect(res.reason()).to.eql(test.status_line);",
+									"        });",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{password}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{username}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURI}}",
+							"host": [
+								"{{BaseURI}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Data Creation Random",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();",
+							"pm.globals.set(\"userid\", jsonData.user_id);",
+							"console.log(\"User ID: \" + jsonData.user_id);",
+							"",
+							"pm.globals.set(\"userfirstname\", jsonData.user_first_name);",
+							"console.log(\"User userfirstname: \" + jsonData.user_first_name);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"user_first_name\", pm.variables.replaceIn('randomFirstName'));",
+							"pm.collectionVariables.set(\"user_last_name\", pm.variables.replaceIn('randomLastName'));",
+							"pm.collectionVariables.set(\"user_contact_number\", Math.floor(Math.random() * 9000000000) + 1000000000); // Random 10-digit number",
+							"pm.collectionVariables.set(\"user_email_id\", `user${Math.floor(Math.random() * 1000)}@example.com`);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"user_first_name\": \"{{user_first_name}}\",\n  \"user_last_name\": \"{{user_last_name}}\",\n  \"user_contact_number\": \"{{user_contact_number}}\",\n  \"user_email_id\": \"{{user_email_id}}\",\n  \"userAddress\": {\n    \"plotNumber\": \"pl-72\",\n    \"street\": \"Broadway\",\n    \"state\": \"New Jersey\",\n    \"country\": \"USA\",\n    \"zipCode\": \"72363\"\n  }\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://userserviceapp-f5a54828541b.herokuapp.com/uap/createusers",
+					"protocol": "https",
+					"host": [
+						"userserviceapp-f5a54828541b",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"uap",
+						"createusers"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BaseURI",
+			"value": "https://userserviceapp-f5a54828541b.herokuapp.com/uap/",
+			"type": "string"
+		},
+		{
+			"key": "username",
+			"value": "Numpy@gmail.com",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "userapi@nn",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": ""
+		},
+		{
+			"key": "user_first_name",
+			"value": ""
+		},
+		{
+			"key": "user_last_name",
+			"value": ""
+		},
+		{
+			"key": "user_contact_number",
+			"value": ""
+		},
+		{
+			"key": "user_email_id",
+			"value": ""
+		},
+		{
+			"key": "testData",
+			"value": ""
+		},
+		{
+			"key": "current_scenario_index",
+			"value": ""
+		}
+	]
+}
